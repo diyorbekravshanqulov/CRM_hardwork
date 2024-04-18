@@ -1,1 +1,3 @@
-export class CreateLidStatusDto {}
+export class CreateLidStatusDto {
+  status: string;
+}

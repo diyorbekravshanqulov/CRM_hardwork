@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLidStatusDto } from './dto/create-lid_status.dto';
 import { UpdateLidStatusDto } from './dto/update-lid_status.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LidStatus } from './entities/lid_status.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LidStatusService {
+  constructor(
+    @InjectRepository(LidStatus)
+    private readonly lidStatusRepo: Repository<LidStatus>,
+  ) {}
+
   create(createLidStatusDto: CreateLidStatusDto) {
-    return 'This action adds a new lidStatus';
+    return this.lidStatusRepo.save(createLidStatusDto);
   }
 
   findAll() {
-    return `This action returns all lidStatus`;
+    return this.lidStatusRepo.find({
+      relations: {
+        lids: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} lidStatus`;
+    return this.lidStatusRepo.findOneBy({ id });
   }
 
   update(id: number, updateLidStatusDto: UpdateLidStatusDto) {
-    return `This action updates a #${id} lidStatus`;
+    return this.lidStatusRepo.update({ id }, updateLidStatusDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} lidStatus`;
+    return this.lidStatusRepo.delete({ id });
   }
 }

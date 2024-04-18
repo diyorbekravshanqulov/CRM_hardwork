@@ -2,10 +2,11 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TargetId } from '../../target_id/entities/target_id.entity';
+import { Target } from '../../target_id/entities/target_id.entity';
 import { Stage } from '../../stage/entities/stage.entity';
 import { LidStatus } from '../../lid_status/entities/lid_status.entity';
 import { ReasonLid } from '../../reason_lid/entities/reason_lid.entity';
@@ -24,18 +25,16 @@ export class Lid {
   @Column()
   phone_number: string;
 
-  @OneToOne(() => TargetId)
-  @JoinColumn()
-  target_id: TargetId;
+  @ManyToOne(() => Target, (target) => target.lids)
+  target_id: Target;
 
-  @OneToOne(() => Stage)
-  @JoinColumn()
+  @ManyToOne(() => Stage, (lidStage) => lidStage.lids)
   lid_stage_id: Stage;
 
-  @Column()
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   test_date: Date;
 
-  @Column()
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   trial_lesson_: Date;
 
   @Column()
@@ -47,11 +46,9 @@ export class Lid {
   @Column()
   trial_lesson_group_id: number;
 
-  @OneToOne(() => LidStatus)
-  @JoinColumn()
+  @ManyToOne(() => LidStatus, (lidStatus) => lidStatus.lids)
   lid_status_id: LidStatus;
 
-  @OneToOne(() => ReasonLid)
-  @JoinColumn()
+  @ManyToOne(() => ReasonLid, (reasonLid) => reasonLid.lids)
   cancel_reason_id: ReasonLid;
 }

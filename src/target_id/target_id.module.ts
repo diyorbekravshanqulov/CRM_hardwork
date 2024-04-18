@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TargetIdService } from './target_id.service';
-import { TargetIdController } from './target_id.controller';
+import { TargetService } from './target_id.service';
+import { TargetController } from './target_id.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Target } from './entities/target_id.entity';
 
 @Module({
-  controllers: [TargetIdController],
-  providers: [TargetIdService],
+  imports: [TypeOrmModule.forFeature([Target])],
+  controllers: [TargetController],
+  providers: [TargetService],
 })
-export class TargetIdModule {}
+export class TargetModule {}

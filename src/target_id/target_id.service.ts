@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTargetIdDto } from './dto/create-target_id.dto';
-import { UpdateTargetIdDto } from './dto/update-target_id.dto';
+import { CreateTargetDto } from './dto/create-target_id.dto';
+import { UpdateTargetDto } from './dto/update-target_id.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Target } from './entities/target_id.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class TargetIdService {
-  create(createTargetIdDto: CreateTargetIdDto) {
-    return 'This action adds a new targetId';
+export class TargetService {
+  constructor(
+    @InjectRepository(Target) private readonly targetRepo: Repository<Target>,
+  ) {}
+
+  create(createTargetDto: CreateTargetDto) {
+    return this.targetRepo.save(createTargetDto);
   }
 
   findAll() {
-    return `This action returns all targetId`;
+    return this.targetRepo.find({
+      relations: {
+        lids: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} targetId`;
+    return this.targetRepo.findOneBy({ id });
   }
 
-  update(id: number, updateTargetIdDto: UpdateTargetIdDto) {
-    return `This action updates a #${id} targetId`;
+  update(id: number, updateTargetDto: UpdateTargetDto) {
+    return this.targetRepo.update({ id }, updateTargetDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} targetId`;
+    return this.targetRepo.delete({ id });
   }
 }

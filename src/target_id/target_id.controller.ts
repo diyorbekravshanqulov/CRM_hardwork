@@ -1,15 +1,15 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TargetIdService } from './target_id.service';
-import { CreateTargetIdDto } from './dto/create-target_id.dto';
-import { UpdateTargetIdDto } from './dto/update-target_id.dto';
+import { TargetService } from './target_id.service';
+import { CreateTargetDto } from './dto/create-target_id.dto';
+import { UpdateTargetDto } from './dto/update-target_id.dto';
 
-@Controller('target-id')
-export class TargetIdController {
-  constructor(private readonly targetIdService: TargetIdService) {}
+@Controller('target')
+export class TargetController {
+  constructor(private readonly targetIdService: TargetService) {}
 
   @Post()
-  create(@Body() createTargetIdDto: CreateTargetIdDto) {
-    return this.targetIdService.create(createTargetIdDto);
+  create(@Body() createTargetDto: CreateTargetDto) {
+    return this.targetIdService.create(createTargetDto);
   }
 
   @Get()
@@ -23,8 +23,8 @@ export class TargetIdController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTargetIdDto: UpdateTargetIdDto) {
-    return this.targetIdService.update(+id, updateTargetIdDto);
+  update(@Param('id') id: string, @Body() updateTargetDto: UpdateTargetDto) {
+    return this.targetIdService.update(+id, updateTargetDto);
   }
 
   @Delete(':id')

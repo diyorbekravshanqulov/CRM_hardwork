@@ -1,1 +1,3 @@
-export class CreateTargetIdDto {}
+export class CreateTargetDto {
+    name: string
+}
