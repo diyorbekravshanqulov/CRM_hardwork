@@ -10,6 +10,12 @@ import { Lid } from './lid/entities/lid.entity';
 import { LidStatus } from './lid_status/entities/lid_status.entity';
 import { Target } from './target_id/entities/target_id.entity';
 import { ReasonLid } from './reason_lid/entities/reason_lid.entity';
+import { AuthModule } from './auth/auth.module';
+import { StuffModule } from './stuff/stuff.module';
+import { RoleModule } from './role/role.module';
+import { GroupModule } from './group/group.module';
+import { BranchModule } from './branch/branch.module';
+import { GroupStuffModule } from './group_stuff/group_stuff.module';
 
 @Module({
   imports: [
@@ -23,11 +29,17 @@ import { ReasonLid } from './reason_lid/entities/reason_lid.entity';
       entities: [Stage, Lid, LidStatus, Target, ReasonLid],
       synchronize: true,
     }),
+    AuthModule,
     StageModule,
     LidStatusModule,
     TargetModule,
     LidModule,
     ReasonLidModule,
+    StuffModule,
+    RoleModule,
+    GroupModule,
+    BranchModule,
+    GroupStuffModule,
   ],
   controllers: [],
   providers: [],
