@@ -20,6 +20,7 @@ export class StageService {
     return this.stageRepo.find({
       relations: {
         lids: true,
+        groups: true,
       },
     });
   }

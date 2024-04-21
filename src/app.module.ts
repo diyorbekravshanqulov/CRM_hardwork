@@ -19,6 +19,8 @@ import { Stuff } from './stuff/entities/stuff.entity';
 import { Role } from './role/entities/role.entity';
 import { Group } from './group/entities/group.entity';
 import { Branch } from './branch/entities/branch.entity';
+import { StuffRole } from './role/entities/stuffRole.entity';
+import { GroupStuff } from './stuff/entities/groupStuff.dto';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { Branch } from './branch/entities/branch.entity';
         Role,
         Group,
         Branch,
+        StuffRole,
+        GroupStuff,
       ],
       synchronize: true,
     }),

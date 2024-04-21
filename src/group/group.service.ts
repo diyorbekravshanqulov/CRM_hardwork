@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Group } from './entities/group.entity';
+import { Repository } from 'typeorm';
+import { ActivateGroupDto } from './dto/activate.dto';
 
 @Injectable()
 export class GroupService {
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+  constructor(
+    @InjectRepository(Group) private readonly groupRepo: Repository<Group>,
+  ) {}
+
+  async create(createGroupDto: CreateGroupDto) {
+    return this.groupRepo.save(createGroupDto);
   }
 
-  findAll() {
-    return `This action returns all group`;
+  async findAll() {
+    return this.groupRepo.find({
+      relations: { group_stage_id: true, stuffs: true, group_branch_id: true },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+  async findOne(id: number) {
+    return this.groupRepo.findOneBy({ id });
   }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
+  async update(id: number, updateGroupDto: UpdateGroupDto) {
+    await this.groupRepo.update({ id }, updateGroupDto);
+    return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async remove(id: number) {
+    return this.groupRepo.delete({ id });
+  }
+
+  async activateGroup(avtivateGroupDto: ActivateGroupDto) {
+    const stuff = await this.groupRepo.findOne({
+      where: { id: avtivateGroupDto.groupId },
+    });
+
+    if (stuff) {
+      stuff.is_active = !stuff.is_active; // Toggle the isActive property
+
+      await this.groupRepo.save(stuff); // Save the changes
+
+      return stuff;
+    }
+
+    throw new NotFoundException('stuff not found');
   }
 }

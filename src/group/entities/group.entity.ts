@@ -3,10 +3,13 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Stuff } from '../../stuff/entities/stuff.entity';
+import { Stage } from '../../stage/entities/stage.entity';
+import { Branch } from '../../branch/entities/branch.entity';
 
 @Entity()
 export class Group {
@@ -26,22 +29,22 @@ export class Group {
   lesson_week_day: string;
 
   @Column()
-  group_stage_id: number;
-
-  @Column()
   room_number: string;
 
   @Column()
   room_floor: number;
 
   @Column()
-  branch_id: number;
-
-  @Column()
   lessons_quant: number;
 
   @Column()
   is_active: boolean;
+
+  @ManyToOne(() => Stage, (stage) => stage.groups)
+  group_stage_id: Stage;
+
+  @ManyToOne(() => Branch, (branch) => branch.groups)
+  group_branch_id: Branch;
 
   @ManyToMany(() => Stuff)
   @JoinTable()
