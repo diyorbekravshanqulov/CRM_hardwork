@@ -8,55 +8,55 @@ import {
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 import { LoginDto } from "./dto/login.dto";
-import { UsersService } from "../users/users.service";
-import { CreateUserDto } from "../users/dto/create-user.dto";
-import { Users } from "../users/model/user.model";
+import { StuffService } from "../stuff/stuff.service";
+import { CreateStuffDto } from "../stuff/dto/create-stuff.dto";
+import { Stuff } from "../stuff/entities/stuff.entity";
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UsersService,
+    private readonly stuffService: StuffService,
     private readonly jwtService: JwtService
   ) {}
 
-  async singUp(createUserDto: CreateUserDto) {
-    const condidate = await this.userService.getUserByEmail(
-      createUserDto.email
+  async singUp(createStuffDto: CreateStuffDto) {
+    const condidate = await this.stuffService.getStuffByLogin(
+      createStuffDto.login
     );
     if (condidate) {
       throw new HttpException(
-        "This user already exist",
+        "This stuff already exist",
         HttpStatus.BAD_REQUEST
       );
     }
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 7);
-    createUserDto.password = hashedPassword;
+    const hashedPassword = await bcrypt.hash(createStuffDto.password, 7);
+    createStuffDto.password = hashedPassword;
 
-    const newUser = await this.userService.create(createUserDto);
-    return this.genarateToken(newUser);
+    const newStuff = await this.stuffService.create(createStuffDto);
+    return this.genarateToken(newStuff);
   }
 
-  private async genarateToken(user: Users) {
-    const payload = { sub: user.id, email: user.email, roles: user.roles };
+  private async genarateToken(stuff: Stuff) {
+    const payload = { sub: stuff.id, login: stuff.login, roles: stuff.roles };
 
     return { token: this.jwtService.sign(payload) };
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.userService.getUserByEmail(loginDto.email);
-    if (!user) {
-      throw new UnauthorizedException("wrong email or passowrd");
+    const stuff = await this.stuffService.getStuffByLogin(loginDto.login);
+    if (!stuff) {
+      throw new UnauthorizedException("wrong login or passowrd");
     }
 
     const validPassword = await bcrypt.compare(
       loginDto.password,
-      user.password
+      stuff.password
     );
 
     if (!validPassword) {
-      throw new UnauthorizedException("wrong email or password");
+      throw new UnauthorizedException("wrong login or password");
     }
-    return this.genarateToken(user);
+    return this.genarateToken(stuff);
   }
 }

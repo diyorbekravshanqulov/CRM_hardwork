@@ -12,11 +12,11 @@ export class RoleService {
   ) {}
 
   async create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+    return this.roleRepo.save(createRoleDto);
   }
 
   async findAll() {
-    return `This action returns all role`;
+    return this.roleRepo.find({ relations: { stuffs: true } });
   }
 
   async getRoleByName(name: string) {
@@ -24,14 +24,18 @@ export class RoleService {
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} role`;
+    return this.roleRepo.findOneBy({ id });
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+    await this.roleRepo.update({ id }, updateRoleDto);
+    return await this.findOne(id);
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} role`;
+    await this.roleRepo.delete({ id });
+    return {
+      message: 'successfully removed',
+    };
   }
 }

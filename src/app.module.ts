@@ -15,7 +15,10 @@ import { StuffModule } from './stuff/stuff.module';
 import { RoleModule } from './role/role.module';
 import { GroupModule } from './group/group.module';
 import { BranchModule } from './branch/branch.module';
-import { GroupStuffModule } from './group_stuff/group_stuff.module';
+import { Stuff } from './stuff/entities/stuff.entity';
+import { Role } from './role/entities/role.entity';
+import { Group } from './group/entities/group.entity';
+import { Branch } from './branch/entities/branch.entity';
 
 @Module({
   imports: [
@@ -26,7 +29,17 @@ import { GroupStuffModule } from './group_stuff/group_stuff.module';
       username: 'postgres',
       password: 'root',
       database: 'hardwork',
-      entities: [Stage, Lid, LidStatus, Target, ReasonLid],
+      entities: [
+        Stage,
+        Lid,
+        LidStatus,
+        Target,
+        ReasonLid,
+        Stuff,
+        Role,
+        Group,
+        Branch,
+      ],
       synchronize: true,
     }),
     AuthModule,
@@ -39,7 +52,6 @@ import { GroupStuffModule } from './group_stuff/group_stuff.module';
     RoleModule,
     GroupModule,
     BranchModule,
-    GroupStuffModule,
   ],
   controllers: [],
   providers: [],

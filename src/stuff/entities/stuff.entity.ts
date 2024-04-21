@@ -1,5 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../../role/entities/role.entity';
+import { Group } from '../../group/entities/group.entity';
 
 @Entity()
 export class Stuff {
@@ -27,4 +28,8 @@ export class Stuff {
   @ManyToMany(() => Role)
   @JoinTable()
   roles: Role[];
+
+  @ManyToMany(() => Group)
+  @JoinTable()
+  groups: Group[];
 }

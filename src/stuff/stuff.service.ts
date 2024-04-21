@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStuffDto } from './dto/create-stuff.dto';
 import { UpdateStuffDto } from './dto/update-stuff.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Stuff } from './entities/stuff.entity';
 import { Repository } from 'typeorm';
 import { RoleService } from '../role/role.service';
+import { AddRoleDto } from './dto/addRole.dto';
+import { ActivateStuffDto } from './dto/activate.dto';
 
 @Injectable()
 export class StuffService {
@@ -15,12 +17,22 @@ export class StuffService {
 
   async create(createStuffDto: CreateStuffDto) {
     const newStuff = await this.stuffRepo.save(createStuffDto);
-    const role = await this.roleService.getRoleByName('USER');
-    
+    const role = await this.roleService.getRoleByName('stuff');
+    if (!role) {
+      throw new BadRequestException('Role not found');
+    }
+
+    newStuff.roles = [role];
+
+    return newStuff;
   }
 
   async findAll() {
     return this.stuffRepo.find({ relations: { roles: true } });
+  }
+
+  async getStuffByLogin(login: string) {
+    return this.stuffRepo.findOne({ where: { login } });
   }
 
   async findOne(id: number) {
@@ -38,4 +50,63 @@ export class StuffService {
       message: 'successfully removed',
     };
   }
+
+  async addRole(addRoleDto: AddRoleDto) {
+    const stuff = await this.stuffRepo.findOne({
+      where: { id: addRoleDto.stuffId },
+    });
+    const role = await this.roleService.getRoleByName(addRoleDto.name);
+
+    if (role && stuff) {
+      stuff.roles.push(role);
+      await this.stuffRepo.save(stuff);
+
+      const updatedStuff = await this.stuffRepo.findOne({
+        where: { id: addRoleDto.stuffId },
+        relations: ['roles'],
+      });
+
+      return updatedStuff;
+    }
+
+    throw new NotFoundException('Stuff or role not found');
+  }
+
+  async removeRole(addRoleDto: AddRoleDto) {
+    const stuff = await this.stuffRepo.findOne({
+      where: { id: addRoleDto.stuffId },
+    });
+    const role = await this.roleService.getRoleByName(addRoleDto.name);
+
+    if (role && stuff) {
+      stuff.roles = stuff.roles.filter((stuffRole) => stuffRole.id !== role.id);
+      await this.stuffRepo.save(stuff);
+
+      const updatedstuff = await this.stuffRepo.findOne({
+        where: { id: addRoleDto.stuffId },
+        relations: ['roles'],
+      });
+
+      return updatedstuff;
+    }
+
+    throw new NotFoundException('stuff or role not found');
+  }
+
+  async activateStuff(activateStuffDto: ActivateStuffDto) {
+    const stuff = await this.stuffRepo.findOne({
+      where: { id: activateStuffDto.stuffId },
+    });
+
+    if (stuff) {
+      stuff.is_active = !stuff.is_active; // Toggle the isActive property
+
+      await this.stuffRepo.save(stuff); // Save the changes
+
+      return stuff;
+    }
+
+    throw new NotFoundException('stuff not found');
+  }
 }
+
