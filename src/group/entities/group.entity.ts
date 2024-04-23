@@ -10,6 +10,8 @@ import {
 import { Stuff } from '../../stuff/entities/stuff.entity';
 import { Stage } from '../../stage/entities/stage.entity';
 import { Branch } from '../../branch/entities/branch.entity';
+import { Lesson } from '../../lesson/entities/lesson.entity';
+import { StudentGroup } from '../../students/entities/studentGroup.entity';
 
 @Entity()
 export class Group {
@@ -49,4 +51,10 @@ export class Group {
   @ManyToMany(() => Stuff)
   @JoinTable()
   stuffs: Stuff[];
+
+  @OneToMany(() => Lesson, (lesson) => lesson.group_id)
+  lessons: Lesson[];
+
+  @OneToMany(() => StudentGroup, (studentgroup) => studentgroup.groups)
+  studentgroups: StudentGroup[];
 }

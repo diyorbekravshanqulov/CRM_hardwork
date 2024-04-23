@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -10,6 +11,7 @@ import { Target } from '../../target_id/entities/target_id.entity';
 import { Stage } from '../../stage/entities/stage.entity';
 import { LidStatus } from '../../lid_status/entities/lid_status.entity';
 import { ReasonLid } from '../../reason_lid/entities/reason_lid.entity';
+import { Student } from '../../students/entities/student.entity';
 
 @Entity()
 export class Lid {
@@ -51,4 +53,7 @@ export class Lid {
 
   @ManyToOne(() => ReasonLid, (reasonLid) => reasonLid.lids)
   cancel_reason_id: ReasonLid;
+
+  @OneToMany(() => Student, (student) => student.lids)
+  students: Student[];
 }

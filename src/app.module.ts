@@ -21,6 +21,15 @@ import { Group } from './group/entities/group.entity';
 import { Branch } from './branch/entities/branch.entity';
 import { StuffRole } from './role/entities/stuffRole.entity';
 import { GroupStuff } from './stuff/entities/groupStuff.dto';
+import { PaymentModule } from './payment/payment.module';
+import { StudentsModule } from './students/students.module';
+import { LessonModule } from './lesson/lesson.module';
+import { StudentLessonModule } from './student_lesson/student_lesson.module';
+import { Payment } from './payment/entities/payment.entity';
+import { Student } from './students/entities/student.entity';
+import { Lesson } from './lesson/entities/lesson.entity';
+import { StudentLesson } from './student_lesson/entities/student_lesson.entity';
+import { StudentGroup } from './students/entities/studentGroup.entity';
 
 @Module({
   imports: [
@@ -43,6 +52,11 @@ import { GroupStuff } from './stuff/entities/groupStuff.dto';
         Branch,
         StuffRole,
         GroupStuff,
+        Payment,
+        Student,
+        Lesson,
+        StudentLesson,
+        StudentGroup,
       ],
       synchronize: true,
     }),
@@ -56,6 +70,10 @@ import { GroupStuff } from './stuff/entities/groupStuff.dto';
     RoleModule,
     GroupModule,
     BranchModule,
+    PaymentModule,
+    StudentsModule,
+    LessonModule,
+    StudentLessonModule,
   ],
   controllers: [],
   providers: [],
