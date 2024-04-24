@@ -30,9 +30,17 @@ import { Student } from './students/entities/student.entity';
 import { Lesson } from './lesson/entities/lesson.entity';
 import { StudentLesson } from './student_lesson/entities/student_lesson.entity';
 import { StudentGroup } from './students/entities/studentGroup.entity';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: 'schema.gql',
+      sortSchema: true,
+      playground: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
