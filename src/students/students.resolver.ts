@@ -9,22 +9,22 @@ export class StudentsResolver {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Mutation(() => Student)
-  create(@Args('createStudent') createStudentDto: CreateStudentDto) {
+  createStudent(@Args('createStudent') createStudentDto: CreateStudentDto) {
     return this.studentsService.create(createStudentDto);
   }
 
   @Query(() => [Student])
-  findAll() {
+  findAllStudent() {
     return this.studentsService.findAll();
   }
 
   @Query(() => Student)
-  findOne(@Args('id') id: string) {
+  findStudentById(@Args('id') id: string) {
     return this.studentsService.findOne(+id);
   }
 
   @Mutation(() => Student)
-  update(
+  updateStudent(
     @Args('id', { type: () => ID }) id: string,
     @Args('updateStudent') updateStudentDto: UpdateStudentDto,
   ) {
@@ -32,7 +32,7 @@ export class StudentsResolver {
   }
 
   @Mutation(() => Student)
-  remove(@Args('id', { type: () => ID }) id: string) {
+  removeStudent(@Args('id', { type: () => ID }) id: string) {
     return this.studentsService.remove(+id);
   }
 }

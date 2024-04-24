@@ -1,38 +1,43 @@
+
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TargetService } from './target_id.service';
 import { CreateTargetDto } from './dto/create-target_id.dto';
-import { UpdateTargetDto } from './dto/update-target_id.dto';
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Target } from './entities/target_id.entity';
+import { UpdateTargetDto } from './dto/update-target_id.dto';
 
-@Resolver('target')
+@Resolver('Target')
 export class TargetResolver {
-  constructor(private readonly targetIdService: TargetService) {}
+  constructor(private readonly targetService: TargetService) {}
 
   @Mutation(() => Target)
-  create(@Args('createTarget') createTargetDto: CreateTargetDto) {
-    return this.targetIdService.create(createTargetDto);
+  createTarget(
+    @Args('createTarget') createTargetDto: CreateTargetDto,
+  ): Promise<Target> {
+    return this.targetService.create(createTargetDto);
   }
 
   @Query(() => [Target])
-  findAll() {
-    return this.targetIdService.findAll();
+  findAllTarget(): Promise<Target[]> {
+    return this.targetService.findAll();
   }
 
   @Query(() => Target)
-  findOne(@Args('id') id: string) {
-    return this.targetIdService.findOne(+id);
+  findTargetById(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<Target | undefined> {
+    return this.targetService.findOne(+id);
   }
 
   @Mutation(() => Target)
-  update(
+  updateTarget(
     @Args('id', { type: () => ID }) id: string,
     @Args('updateTarget') updateTargetDto: UpdateTargetDto,
   ) {
-    return this.targetIdService.update(+id, updateTargetDto);
+    return this.targetService.update(+id, updateTargetDto);
   }
 
   @Mutation(() => ID)
-  remove(@Args('id', { type: () => ID }) id: string) {
-    return this.targetIdService.remove(+id);
+  removeTarget(@Args('id', { type: () => ID }) id: string) {
+    return this.targetService.remove(+id);
   }
 }

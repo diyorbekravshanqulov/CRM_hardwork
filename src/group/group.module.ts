@@ -6,6 +6,7 @@ import { Group } from './entities/group.entity';
 import { GroupStuff } from '../stuff/entities/groupStuff.dto';
 import { StudentGroup } from '../students/entities/studentGroup.entity';
 import { StudentsModule } from '../students/students.module';
+import { GroupResolver } from './group.resolver';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { StudentsModule } from '../students/students.module';
     StudentsModule,
   ],
   controllers: [GroupController],
-  providers: [GroupService],
+  providers: [GroupService, GroupResolver],
 })
 export class GroupModule {}

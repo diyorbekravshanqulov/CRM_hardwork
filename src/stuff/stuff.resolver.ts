@@ -2,38 +2,38 @@ import { HttpCode, HttpStatus } from '@nestjs/common';
 import { StuffService } from './stuff.service';
 import { CreateStuffDto } from './dto/create-stuff.dto';
 import { UpdateStuffDto } from './dto/update-stuff.dto';
-import { Roles } from '../decorators/roles-auth.decorator';
 import { AddRoleDto } from './dto/addRole.dto';
 import { ActivateStuffDto } from './dto/activate.dto';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Stuff } from './entities/stuff.entity';
+import { Roles } from '../decorators/roles-auth.decorator';
 
-@Resolver('stuff')
+@Resolver('Stuff')
 export class StuffResolver {
   constructor(private readonly stuffService: StuffService) {}
 
   @Mutation(() => Stuff)
-  async create(@Args('createStuff') createStuffDto: CreateStuffDto) {
+  async createStuff(@Args('createStuff') createStuffDto: CreateStuffDto) {
     return this.stuffService.create(createStuffDto);
   }
 
   @Query(() => [Stuff])
-  async findAll() {
+  async findAllStuff() {
     return this.stuffService.findAll();
   }
 
   @Query(() => Stuff)
-  async getStuffByLogin(@Args('login') login: string) {
+  async findStuffByLogin(@Args('login') login: string) {
     return this.stuffService.getStuffByLogin(login);
   }
 
   @Query(() => Stuff)
-  async findOne(@Args('id') id: string) {
+  async findStuffById(@Args('id') id: string) {
     return this.stuffService.findOne(+id);
   }
 
   @Mutation(() => Stuff)
-  async update(
+  async updateStuff(
     @Args('id', { type: () => ID }) id: string,
     @Args('updateStuff') updateStuffDto: UpdateStuffDto,
   ) {
@@ -41,26 +41,26 @@ export class StuffResolver {
   }
 
   @Mutation(() => Stuff)
-  async remove(@Args('id', { type: () => ID }) id: string) {
+  async removeStuff(@Args('id', { type: () => ID }) id: string) {
     return this.stuffService.remove(+id);
   }
 
+  @Mutation(() => Stuff)
   @Roles('ADMIN', 'USER')
   @HttpCode(HttpStatus.OK)
-  @Mutation(() => Stuff)
-  async addRole(@Args('add_role') addRoleDto: AddRoleDto) {
+  async addRole(@Args('addRole') addRoleDto: AddRoleDto) {
     return this.stuffService.addRole(addRoleDto);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Mutation(() => Stuff)
-  async removeRole(@Args('remove_role') addRoleDto: AddRoleDto) {
-    return this.stuffService.removeRole(addRoleDto);
+  @HttpCode(HttpStatus.OK)
+  async removeRole(@Args('removeRole') removeRoleDto: AddRoleDto) {
+    return this.stuffService.removeRole(removeRoleDto);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Mutation(() => Stuff)
-  async avtivateUser(@Args('activate') activateStuffDto: ActivateStuffDto) {
+  @HttpCode(HttpStatus.OK)
+  async activateStuff(@Args('activate') activateStuffDto: ActivateStuffDto) {
     return this.stuffService.activateStuff(activateStuffDto);
   }
 }
