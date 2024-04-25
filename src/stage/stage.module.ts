@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Stage } from './entities/stage.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Stage])],
+  imports:[TypeOrmModule.forFeature([Stage])],
   controllers: [StageController],
   providers: [StageService],
 })

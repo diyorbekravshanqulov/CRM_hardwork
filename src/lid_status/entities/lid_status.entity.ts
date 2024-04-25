@@ -1,14 +1,20 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Lid } from '../../lid/entities/lid.entity';
+import { Field, ObjectType, ID } from "@nestjs/graphql";
+import { Lid } from "src/lid/entities/lid.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+@ObjectType()
 @Entity()
-export class LidStatus {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class LidStatus  {
 
-  @Column({ nullable: false })
-  status: string;
+    @Field(() => ID)
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @OneToMany(() => Lid, (lid) => lid.lid_status_id)
-  lids: Lid[];
+    @Field()
+    @Column()
+    status :string
+
+    @OneToMany(()=>Lid,(data)=>data.lid_status_id)
+    @Field(type => [Lid])
+    lidStatus:Lid[]
 }

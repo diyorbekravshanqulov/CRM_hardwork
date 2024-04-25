@@ -1,60 +1,45 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Stuff } from '../../stuff/entities/stuff.entity';
-import { Stage } from '../../stage/entities/stage.entity';
-import { Branch } from '../../branch/entities/branch.entity';
-import { Lesson } from '../../lesson/entities/lesson.entity';
-import { StudentGroup } from '../../students/entities/studentGroup.entity';
+import { Branch } from "src/branch/entities/branch.entity";
+import { GroupStuff } from "src/group_stuff/entities/group_stuff.entity";
+import { Lesson } from "src/lesson/entities/lesson.entity";
+import { Stage } from "src/stage/entities/stage.entity";
+import { StudentGroup } from "src/student_group/entities/student_group.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Group {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id:number
 
-  @Column()
-  group_name: string;
+    @Column()
+    group_name:string
+    @Column()
+    lesson_start_time:string
+    @Column()
+    lesson_continuous:string
+    @Column()
+    lesson_week_day:string
 
-  @Column()
-  lesson_start_time: string;
+    @ManyToOne(()=>Stage,(data)=>data.group_stages)
+    group_stage_id:Stage
 
-  @Column()
-  lesson_continous: string;
+    @Column()
+    room_number:number
+    @Column()
+    room_floor:number
 
-  @Column()
-  lesson_week_day: string;
+    @ManyToOne(()=>Branch,(data)=>data.branches)
+    branch_id:Branch
 
-  @Column()
-  room_number: string;
+    @Column()
+    lessons_quant:number
+    @Column()
+    is_active:boolean
 
-  @Column()
-  room_floor: number;
+    @OneToMany(()=>GroupStuff,(data)=>data.group_id)
+    groupStuffs:GroupStuff[]
+    @OneToMany(()=>Lesson,(data)=>data.group_id)
+    lessons:Lesson[]
+    @OneToMany(()=>StudentGroup,(data)=>data.group_id)
+    studentGroup:StudentGroup[]
 
-  @Column()
-  lessons_quant: number;
-
-  @Column()
-  is_active: boolean;
-
-  @ManyToOne(() => Stage, (stage) => stage.groups)
-  group_stage_id: Stage;
-
-  @ManyToOne(() => Branch, (branch) => branch.groups)
-  group_branch_id: Branch;
-
-  @ManyToMany(() => Stuff)
-  @JoinTable()
-  stuffs: Stuff[];
-
-  @OneToMany(() => Lesson, (lesson) => lesson.group_id)
-  lessons: Lesson[];
-
-  @OneToMany(() => StudentGroup, (studentgroup) => studentgroup.groups)
-  studentgroups: StudentGroup[];
 }

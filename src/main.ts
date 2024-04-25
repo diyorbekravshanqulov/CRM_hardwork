@@ -1,12 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import * as cookieParser from "cookie-parser";
 
-async function bootstrap() {
+const start = async () => {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
-  const PORT = 3000
-  await app.listen(PORT, (): void => {
-    console.log(`http://127.0.0.1:${PORT}`);
+  app.setGlobalPrefix("api");
+  app.use(cookieParser());
+  await app.listen(3000, () => {
+    console.log(`Server started at ${3000}`);
   });
-}
-bootstrap();
+};
+start();

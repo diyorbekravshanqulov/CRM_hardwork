@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Lid } from './entities/lid.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Lid])],
+  imports:[TypeOrmModule.forFeature([Lid])],
   controllers: [LidController],
   providers: [LidService],
 })

@@ -7,32 +7,27 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class StudentsService {
-  constructor(
-    @InjectRepository(Student)
-    private readonly studentRepo: Repository<Student>,
-  ) {}
+constructor(@InjectRepository(Student) private studentRepo:Repository<Student>){}
 
-  async create(createStudentDto: CreateStudentDto) {
-    return this.studentRepo.save(createStudentDto);
+  create(createStudentDto: CreateStudentDto) {
+    return this.studentRepo.save(createStudentDto)
   }
 
-  async findAll() {
-    return this.studentRepo.find();
+  findAll() {
+    return this.studentRepo.find()
   }
 
-  async findOne(id: number) {
-    return this.studentRepo.findOneBy({ id });
+  findOne(id: number) {
+    return this.studentRepo.findOneBy({id})
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
-    await this.studentRepo.update({ id }, updateStudentDto);
-    return await this.findOne(id);
+    await this.studentRepo.update({id},updateStudentDto)
+    return this.findOne(id)
   }
 
   async remove(id: number) {
-    await this.studentRepo.delete({ id });
-    return {
-      message: 'successfully removed',
-    };
+    await this.studentRepo.delete({id})
+    return id
   }
 }

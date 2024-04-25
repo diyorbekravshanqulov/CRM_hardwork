@@ -1,3 +1,3 @@
 export class CreateStageDto {
-  name: string;
+    name:string
 }

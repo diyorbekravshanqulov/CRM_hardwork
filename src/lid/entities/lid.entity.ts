@@ -1,59 +1,60 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Target } from '../../target_id/entities/target_id.entity';
-import { Stage } from '../../stage/entities/stage.entity';
-import { LidStatus } from '../../lid_status/entities/lid_status.entity';
-import { ReasonLid } from '../../reason_lid/entities/reason_lid.entity';
-import { Student } from '../../students/entities/student.entity';
+import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { LidStatus } from "src/lid_status/entities/lid_status.entity";
+import { ReasonLid } from "src/reason_lid/entities/reason_lid.entity";
+import { Stage } from "src/stage/entities/stage.entity";
+import { Student } from "src/students/entities/student.entity";
+import { Target } from "src/target/entities/target.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+
+
+@ObjectType()
 @Entity()
 export class Lid {
-  @PrimaryGeneratedColumn()
-  id: number;
+    
+    @Field(type => ID)
+    @PrimaryGeneratedColumn()
+    id:number
 
-  @Column()
-  first_name: string;
+    
+    @Field()
+    @Column()
+    first_name:string
 
-  @Column()
-  last_name: string;
 
-  @Column()
-  phone_number: string;
+    
+    @ManyToOne(()=>LidStatus,(data)=>data.lidStatus)
+    @Field(type => LidStatus)
+    lid_status_id:LidStatus
 
-  @ManyToOne(() => Target, (target) => target.lids)
-  target_id: Target;
+    // @Column()
+    // last_name:string
 
-  @ManyToOne(() => Stage, (lidStage) => lidStage.lids)
-  lid_stage_id: Stage;
+    // @Column()
+    // phone_number:string
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
-  test_date: Date;
+    // @ManyToOne(()=>Target,(data)=>data.targets)
+    // target_id:Target
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
-  trial_lesson_: Date;
+    // @ManyToOne(()=>Stage,(data)=>data.stages)
+    //  stage_id:Stage
 
-  @Column()
-  trial_lesson_date: number;
+    // @Column()
+    // test_date:Date
 
-  @Column()
-  trial_lesson_time: string;
+    // @Column()
+    // trial_lesson_date:Date
 
-  @Column()
-  trial_lesson_group_id: number;
+    // @Column()
+    // trial_lesson_time:string
 
-  @ManyToOne(() => LidStatus, (lidStatus) => lidStatus.lids)
-  lid_status_id: LidStatus;
+    // @Column()
+    // trial_lesson_group_id:number
 
-  @ManyToOne(() => ReasonLid, (reasonLid) => reasonLid.lids)
-  cancel_reason_id: ReasonLid;
-
-  @OneToMany(() => Student, (student) => student.lids)
-  students: Student[];
+    
+    // @ManyToOne(()=>ReasonLid,(data)=>data.reasons_lid)
+    // reason_lid_id:ReasonLid
+    
+    // @OneToMany(()=>Student,(data)=>data.lid_id)
+    // students:Student[]
 }

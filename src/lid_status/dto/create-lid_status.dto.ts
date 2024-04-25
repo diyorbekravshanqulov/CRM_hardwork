@@ -1,3 +1,9 @@
+import { Field, InputType } from "@nestjs/graphql";
+
+@InputType()
 export class CreateLidStatusDto {
-  status: string;
+    @Field()
+    status:string
 }
+
+

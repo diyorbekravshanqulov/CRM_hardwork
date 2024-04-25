@@ -1,3 +1,3 @@
 export class CreateReasonLidDto {
-  reason_lid: string;
+    reason_lid:string
 }

@@ -1,8 +1,8 @@
 export class CreateStudentDto {
-  first_name: string;
-  last_name: string;
-  phone_number: string;
-  birthday: Date;
-  male: string;
-  lids: Object;
+    lid_id:object
+    first_name:string
+    last_name:string
+    phone_number:string
+    bith_date:string
+    gender:string
 }

@@ -7,34 +7,27 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class StudentLessonService {
-  constructor(
-    @InjectRepository(StudentLesson)
-    private readonly studentLessonRepo: Repository<StudentLesson>,
-  ) {}
+  constructor(@InjectRepository(StudentLesson) private studentLessonsRepo:Repository<StudentLesson>){}
 
-  async create(createStudentLessonDto: CreateStudentLessonDto) {
-    return this.studentLessonRepo.save(createStudentLessonDto);
+  create(createStudentLessonDto: CreateStudentLessonDto) {
+    return this.studentLessonsRepo.save(createStudentLessonDto)
   }
 
-  async findAll() {
-    return this.studentLessonRepo.find({
-      relations: { lesson_id: true, student_id: true },
-    });
+  findAll() {
+    return this.studentLessonsRepo.find({relations:{lesson_id:true,student_id:true}})
   }
 
-  async findOne(id: number) {
-    return this.studentLessonRepo.findOneBy({ id });
+  findOne(id: number) {
+    return this.studentLessonsRepo.findOneBy({id})
   }
 
   async update(id: number, updateStudentLessonDto: UpdateStudentLessonDto) {
-    await this.studentLessonRepo.update({ id }, updateStudentLessonDto);
-    return await this.findOne(id);
+    await this.studentLessonsRepo.update({id},updateStudentLessonDto)
+    return this.findOne(id)
   }
 
   async remove(id: number) {
-    await this.studentLessonRepo.delete({ id });
-    return {
-      message: 'successfully removed',
-    };
+    await this.studentLessonsRepo.delete({id})
+    return id
   }
 }

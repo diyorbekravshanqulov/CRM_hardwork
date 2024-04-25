@@ -7,31 +7,28 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class BranchService {
-  constructor(
-    @InjectRepository(Branch) private readonly branchRepo: Repository<Branch>,
-  ) {}
+  constructor(@InjectRepository(Branch) private branchRepo:Repository<Branch>){}
 
-  async create(createBranchDto: CreateBranchDto) {
-    return this.branchRepo.save(createBranchDto)
+
+  create(createBranchDto: CreateBranchDto) {
+        return this.branchRepo.save(createBranchDto)
   }
 
-  async findAll() {
-    return this.branchRepo.find({ relations: { groups: true } })
+  findAll() {
+    return this.branchRepo.find({relations:{branches:true}})
   }
 
-  async findOne(id: number) {
-    return this.branchRepo.findOneBy({ id })
+  findOne(id: number) {
+    return this.branchRepo.findOneBy({id})
   }
 
   async update(id: number, updateBranchDto: UpdateBranchDto) {
-    await this.branchRepo.update({ id }, updateBranchDto)
-    return await this.findOne(id)
+    await this.branchRepo.update({id},updateBranchDto)
+    return this.findOne(id)
   }
 
   async remove(id: number) {
-    await this.branchRepo.delete({ id })
-    return {
-      message: "successfully removed"
-    }
+    await this.branchRepo.delete({id})
+    return id
   }
 }

@@ -1,3 +1,3 @@
 export class CreateTargetDto {
-    name: string
+    name:string
 }

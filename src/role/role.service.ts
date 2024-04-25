@@ -7,35 +7,27 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class RoleService {
-  constructor(
-    @InjectRepository(Role) private readonly roleRepo: Repository<Role>,
-  ) {}
+  constructor(@InjectRepository(Role) private roleRero:Repository<Role>){}
 
-  async create(createRoleDto: CreateRoleDto) {
-    return this.roleRepo.save(createRoleDto);
+
+  create(createRoleDto: CreateRoleDto) {
+    return this.roleRero.save(createRoleDto)
   }
 
-  async findAll() {
-    return this.roleRepo.find({ relations: { stuffs: true } });
+  findAll() {
+    return this.roleRero.find({relations:{stuffes:true}})
   }
 
-  async getRoleByName(name: string) {
-    return this.roleRepo.findOneBy({ name });
-  }
-
-  async findOne(id: number) {
-    return this.roleRepo.findOneBy({ id });
+  findOne(id: number) {
+    return this.roleRero.findOneBy({id})
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
-    await this.roleRepo.update({ id }, updateRoleDto);
-    return await this.findOne(id);
+    await this.roleRero.update({id},updateRoleDto)
+    return this.findOne(id)
   }
-
   async remove(id: number) {
-    await this.roleRepo.delete({ id });
-    return {
-      message: 'successfully removed',
-    };
+    await this.roleRero.delete({id})
+    return id
   }
 }

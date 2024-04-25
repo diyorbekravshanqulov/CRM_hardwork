@@ -1,35 +1,40 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Role } from '../../role/entities/role.entity';
-import { Group } from '../../group/entities/group.entity';
+import { GroupStuff } from "src/group_stuff/entities/group_stuff.entity";
+import { Role } from "src/role/entities/role.entity";
+import { StuffRole } from "src/stuff_role/entities/stuff_role.entity";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Stuff {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id:number
+    @Column()
+    first_name:string
+    @Column()
+    last_name:string
+    @Column()
+    phone_number:string
+    @Column()
+    login:string
 
-  @Column()
-  fist_name: string;
+    @Column()
+    hashed_parol:string
 
-  @Column()
-  last_name: string;
+    @Column({ nullable: true })
+    hashed_refresh_token:string
 
-  @Column()
-  phone_number: string;
+    @Column()
+    role:string
 
-  @Column()
-  login: string;
+    @Column({default:false})
+    is_active:boolean
 
-  @Column()
-  password: string;
+    @OneToMany((type) => StuffRole,(data)=>data.stuffId)
+    stuffRoles: StuffRole[]
 
-  @Column()
-  is_active: boolean;
+    @OneToMany(()=>GroupStuff,(data)=>data.stuff_id)
+        stuffGroup:GroupStuff[]
 
-  @ManyToMany(() => Role)
-  @JoinTable()
-  roles: Role[];
-
-  @ManyToMany(() => Group)
-  @JoinTable()
-  groups: Group[];
+    //     @ManyToMany(() => Role)
+    // @JoinTable()
+    // roles: Role[]
 }

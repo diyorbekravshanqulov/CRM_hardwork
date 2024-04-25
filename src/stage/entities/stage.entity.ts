@@ -1,18 +1,18 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Lid } from '../../lid/entities/lid.entity';
-import { Group } from '../../group/entities/group.entity';
+import { Group } from "src/group/entities/group.entity";
+import { Lid } from "src/lid/entities/lid.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Stage {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id:number
 
-  @Column({ nullable: false })
-  name: string;
+    @Column()
+    name:string
 
-  @OneToMany(() => Lid, (lid) => lid.lid_stage_id)
-  lids: Lid[];
+    // @OneToMany(()=>Lid,(data)=>data.stage_id)
+    // stages:Lid[]
 
-  @OneToMany(() => Group, (group) => group.group_stage_id)
-  groups: Group[];
+    @OneToMany(()=>Group,(data)=>data.group_stage_id)
+    group_stages:Group[]
 }

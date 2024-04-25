@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReasonLid } from './entities/reason_lid.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ReasonLid])],
+  imports:[TypeOrmModule.forFeature([ReasonLid])],
   controllers: [ReasonLidController],
   providers: [ReasonLidService],
 })

@@ -1,14 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Lid } from '../../lid/entities/lid.entity';
+import { Lid } from "src/lid/entities/lid.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class ReasonLid {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id:number
 
-  @Column({ nullable: false })
-  reason_lid: string;
+    @Column()
+    reason_lid:string
 
-  @OneToMany(() => Lid, (lid) => lid.cancel_reason_id)
-  lids: Lid[];
+    // @OneToMany(()=>Lid,(data)=>data.reason_lid_id)
+    // reasons_lid:Lid[]
 }

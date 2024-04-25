@@ -1,44 +1,31 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Lid } from '../../lid/entities/lid.entity';
-import { Payment } from '../../payment/entities/payment.entity';
-import { StudentLesson } from '../../student_lesson/entities/student_lesson.entity';
-import { StudentGroup } from './studentGroup.entity';
+import { Lid } from "src/lid/entities/lid.entity";
+import { Payment } from "src/payment/entities/payment.entity";
+import { StudentGroup } from "src/student_group/entities/student_group.entity";
+import { StudentLesson } from "src/student_lesson/entities/student_lesson.entity";
+import { Column, Entity,  ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Student {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id:number
 
-  @Column()
-  first_name: string;
+    // @ManyToOne(()=>Lid,(data)=>data.students)
+    // lid_id:Lid
+    @Column()
+    first_name:string
+    @Column()
+    last_name:string
+    @Column()
+    phone_number:string
+    @Column()
+    bith_date:string
+    @Column()
+    gender:string
+    @OneToMany(()=>StudentGroup,(data)=>data.student_id)
+    studentGroups:StudentGroup[]
+    @OneToMany(()=>StudentLesson,(data)=>data.student_id)
+    studentsLessons:StudentLesson[]
+    @OneToMany(()=>Payment,(data)=>data.student_id)
+    payments:Payment[]
 
-  @Column()
-  last_name: string;
-
-  @Column()
-  phone_number: string;
-
-  @Column()
-  birthday: Date;
-
-  @Column()
-  male: string;
-
-  @ManyToOne(() => Lid, (lid) => lid.students)
-  lids: Lid;
-
-  @OneToMany(() => Payment, (payment) => payment.student_id)
-  payments: Payment[];
-
-  @OneToMany(() => StudentLesson, (student_les) => student_les.student_id)
-  student_lessons: StudentLesson[];
-
-  @OneToMany(() => StudentGroup, (studentgroups) => studentgroups.students)
-  studentgroups: StudentGroup[];
 }
