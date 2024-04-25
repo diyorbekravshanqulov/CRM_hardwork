@@ -30,34 +30,35 @@ import { Student } from './students/entities/student.entity';
 import { Lesson } from './lesson/entities/lesson.entity';
 import { StudentLesson } from './student_lesson/entities/student_lesson.entity';
 import { StudentGroup } from './students/entities/studentGroup.entity';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: 'schema.gql',
-      sortSchema: true,
-      playground: true,
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        type: config.get<'postgres'>('TYPEORM_CONNECTION'),
-        host: config.get<string>('TYPEORM_HOST'),
-        username: config.get<string>('TYPEORM_USERNAME'),
-        password: config.get<string>('TYPEORM_PASSWORD'),
-        port: config.get<number>('TYPEORM_PORT'),
-        database: config.get<string>('TYPEORM_DATABASE'),
-        entities: [__dirname + 'dist/**/*.entity{.ts, .js}'],
-        synchronize: true,
-        autoLoadEntities: true,
-        logging: true,
-      }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres', 
+      password: 'root',
+      database: 'hardwork',
+      entities: [
+        Stage,
+        Lid,
+        LidStatus,
+        Target,
+        ReasonLid,
+        Stuff,
+        Role,
+        Group,
+        Branch,
+        StuffRole,
+        GroupStuff,
+        Payment,
+        Student,
+        Lesson,
+        StudentLesson,
+        StudentGroup,
+      ],
+      synchronize: true,
     }),
     AuthModule,
     StageModule,

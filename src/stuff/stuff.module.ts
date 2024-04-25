@@ -7,7 +7,6 @@ import { Role } from '../role/entities/role.entity';
 import { AuthModule } from '../auth/auth.module';
 import { RoleModule } from '../role/role.module';
 import { StuffRole } from '../role/entities/stuffRole.entity';
-import { StuffResolver } from './stuff.resolver';
 
 @Module({
   imports: [
@@ -16,7 +15,7 @@ import { StuffResolver } from './stuff.resolver';
     forwardRef(() => AuthModule),
   ],
   controllers: [StuffController],
-  providers: [StuffService, StuffResolver],
+  providers: [StuffService],
   exports: [StuffService],
 })
 export class StuffModule {}
