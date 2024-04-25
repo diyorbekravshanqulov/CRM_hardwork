@@ -25,7 +25,7 @@ export class Student {
     studentGroups:StudentGroup[]
     @OneToMany(()=>StudentLesson,(data)=>data.student_id)
     studentsLessons:StudentLesson[]
-    @OneToMany(()=>Payment,(data)=>data.student_id)
-    payments:Payment[]
+    // @OneToMany(()=>Payment,(data)=>data.student_id)
+    // payments:Payment[]
 
 }

@@ -14,7 +14,7 @@ export class PaymentService {
   }
 
   findAll() {
-    return this.paymentRepo.find({relations:{student_id:true}})
+    return this.paymentRepo.find()
   }
 
   findOne(id: number) {

@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateLidDto } from './create-lid.dto';
+import { Field, InputType } from '@nestjs/graphql';
 
-export class UpdateLidDto extends PartialType(CreateLidDto) {}
+@InputType()
+export class UpdateLidDto {
+  @Field()
+  first_name?: string;
+}
