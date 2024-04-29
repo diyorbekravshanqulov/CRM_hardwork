@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LidStatusModule } from './lid_status/lid_status.module';
 import { LidStatus } from './lid_status/entities/lid_status.entity';
@@ -25,14 +25,6 @@ import { StudentGroupModule } from './student_group/student_group.module';
 import { StudentLessonModule } from './student_lesson/student_lesson.module';
 import { StudentsModule } from './students/students.module';
 import { PaymentModule } from './payment/payment.module';
-import { Branch } from './branch/entities/branch.entity';
-import { Group } from './group/entities/group.entity';
-import { GroupStuff } from './group_stuff/entities/group_stuff.entity';
-import { Lesson } from './lesson/entities/lesson.entity';
-import { StudentGroup } from './student_group/entities/student_group.entity';
-import { Student } from './students/entities/student.entity';
-import { StudentLesson } from './student_lesson/entities/student_lesson.entity';
-import { Payment } from './payment/entities/payment.entity';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
@@ -46,32 +38,21 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       sortSchema: true,
       playground: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'hardwork',
-      host: 'localhost',
-      synchronize: true,
-      entities: [
-        LidStatus,
-        ReasonLid,
-        Stage,
-        Target,
-        Lid,
-        Role,
-        Stuff,
-        StuffRole,
-        Branch,
-        Group,
-        GroupStuff,
-        Lesson,
-        StudentGroup,
-        Student,
-        StudentLesson,
-        Payment,
-      ],
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        type: config.get<'postgres'>('TYPEORM_CONNECTION'),
+        host: config.get<string>('TYPEORM_HOST'),
+        username: config.get<string>('TYPEORM_USERNAME'),
+        password: config.get<string>('TYPEORM_PASSWORD'),
+        port: config.get<number>('TYPEORM_PORT'),
+        database: config.get<string>('TYPEORM_DATABASE'),
+        entities: [__dirname + 'dist/**/*.entity{.ts, .js}'],
+        synchronize: true,
+        autoLoadEntities: true,
+        logging: true,
+      }),
     }),
     LidStatusModule,
     ReasonLidModule,

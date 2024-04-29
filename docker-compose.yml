@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   postgres:
-    container_name: postgres-db
+    container_name: postgres-data
     image: postgres:14.0-alpine
     restart: always
     environment:
@@ -14,8 +14,10 @@ services:
     ports:
       - ${TYPEORM_LOCAL_PORT}:${TYPEORM_PORT}
   app:
-    container_name: nest_graphql
-    # image: dyrbkrvshqlv/testy-app
+    container_name: crm_nest_graphql
+    build: 
+      context: ./
+    # image: dyrbkrvshqlv/hardwork-app
     depends_on:
       - postgres
     restart: unless-stopped
